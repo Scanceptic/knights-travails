@@ -20,7 +20,7 @@ function createKnightMoves() {
 		adjacencyList.push(adjacencyRow);
 	}
 	// checks move is valid
-	function move(oldPosition, newPosition) {
+	function move(oldPosition = [0, 1], newPosition) {
 		// if move array position startX and startY includes an element with [endX, endY]
 		// && if neither start or end position are above 7 or below 0 (out of board)
 		if (
@@ -36,26 +36,30 @@ function createKnightMoves() {
 			newPosition[0],
 			newPosition[1] < 8)
 		) {
-			// set position
-			let position = [newPosition[0], newPosition[1]];
-			// move is legal, return move coords and old move
-			return { position, oldPosition };
+			// update old Position
+			oldPosition = newPosition;
+			// move is legal, return move coords
+			return [oldPosition, newPosition];
 		} else {
 			// else return false - invalid move
+			console.log("Invalid move");
 			return false;
 		}
 	}
 	// renders board on DOM
 	// board is re-rendered after every move so no need to delete old content
-	function renderBoard(position) {
-		const board = document.getElementById("board");
+	function renderBoard(position = [0, 1]) {
+		const board = document.getElementById("squares");
 		for (let i = 0; i < 8; i++) {
 			for (let j = 1; j < 9; j++) {
 				const square = document.createElement("div");
 				square.classList.add("square");
 				square.id = i * 8 + j;
 				board.appendChild(square);
-				if (position[0] * 8 + position[1] === parseInt(square.id)) {
+				if (
+					position &&
+					position[0] * 8 + position[1] + 1 === parseInt(square.id)
+				) {
 					square.textContent = "Knight";
 					square.classList.add("knight");
 				}
@@ -65,10 +69,18 @@ function createKnightMoves() {
 	return { adjacencyList, move, renderBoard };
 }
 
+const knightMoves = createKnightMoves();
+knightMoves.renderBoard();
+
 const submitButton = document.getElementById("submit-move");
 const xInput = document.getElementById("x");
 const yInput = document.getElementById("y");
 submitButton.addEventListener("click", () => {
 	const endX = xInput.textContent;
 	const endY = yInput.textContent;
+	const position = knightMoves.move(undefined, [endX, endY]);
+	// update old position
+	oldPosition = position[0];
+	// render new position
+	knightMoves.renderBoard(position[1]);
 });

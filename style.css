@@ -2,6 +2,7 @@
 	box-sizing: border-box;
 	margin: 0;
 	padding: 0;
+	list-style: none;
 }
 
 body {
@@ -33,25 +34,48 @@ button {
 	padding: 5px;
 }
 
-#board,
-.square {
-	border: 1px solid black;
+#board {
+	display: grid;
+	grid-template-columns: 1fr, 8fr;
+	grid-template-rows: 1fr, 8fr;
+    gap: 5px;
 }
 
-#board {
-	width: 800px;
-	height: 800px;
+#columns, #rows {
+    display: flex;
+    justify-content: space-around;
+    font-weight: 700;
+    font-size: 1.25rem;
+}
+
+#columns {
+	grid-row: 1 / 2;
+	grid-column: 2 / 3;
+    flex-direction: row;
+}
+
+#rows {
+	grid-row: 2 / 3;
+	grid-column: 1 / 2;
+    flex-direction: column;
+}
+
+#squares {
+    width: 800px;
+    height: 800px;
+	grid-row: 2 / 3;
+	grid-column: 2 / 3;
 	display: grid;
 	grid-template-columns: repeat(8, 1fr);
 	grid-template-rows: repeat(8, 1fr);
+    border: 1px solid black;
 }
 
 .square {
-	width: 100px;
-	height: 100px;
 	font-size: 1.5rem;
 	font-weight: 700;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+    border: 1px solid black;
 }
