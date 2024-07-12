@@ -79,13 +79,16 @@ function createKnightMoves() {
 				square.classList.add("square");
 				square.id = i * 8 + j;
 				// show valid move on hover
-				square.addEventListener("hover", () => {
+				square.addEventListener("mouseover", () => {
 					const validMove = move(oldPosition, [i, j - 1]);
 					if (validMove) {
-						square.style.backgroundColor = "green";
+						square.style.backgroundColor = "#55FF55";
 					} else {
-						square.style.backgroundColor = "red";
+						square.style.backgroundColor = "#FF5555";
 					}
+				});
+				square.addEventListener("mouseleave", () => {
+					square.style.backgroundColor = "#FFFFFF";
 				});
 				// allow click to move
 				square.addEventListener("click", () => {
