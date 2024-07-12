@@ -181,23 +181,38 @@ function createKnightMoves() {
 		}
 	}
 	// do journey once given optimal route
-	async function doJourney(path) {
+	function createJourneyRenderer() {
 		try {
-			for (let i = 0; i < path.length; i++) {
-				await new Promise((resolve) => {
-					setTimeout(() => {
-						renderBoard(path[i]);
-						resolve();
-					}, 250);
-				});
-			}
-			// return final position
-			oldPosition = path[path.length - 1];
-			return path[path.length - 1];
+			let inProgress = false;
+
+			return async function (path) {
+				if (inProgress) {
+					console.log("Do not disturb his journey");
+					return;
+				}
+
+				inProgress = true;
+
+				for (let i = 0; i < path.length; i++) {
+					await new Promise((resolve) => {
+						setTimeout(() => {
+							renderBoard(path[i]);
+							resolve();
+						}, 250);
+					});
+				}
+				// return final position
+				oldPosition = path[path.length - 1];
+				inProgress = false;
+				return oldPosition;
+			};
 		} catch (error) {
 			console.log(error);
 		}
 	}
+
+	const doJourney = createJourneyRenderer();
+
 	return { move, renderBoard, getJourney, isValid };
 }
 
