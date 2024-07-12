@@ -38,37 +38,38 @@ button {
 	display: grid;
 	grid-template-columns: 1fr, 8fr;
 	grid-template-rows: 1fr, 8fr;
-    gap: 5px;
+	gap: 5px;
 }
 
-#columns, #rows {
-    display: flex;
-    justify-content: space-around;
-    font-weight: 700;
-    font-size: 1.25rem;
+#columns,
+#rows {
+	display: flex;
+	justify-content: space-around;
+	font-weight: 700;
+	font-size: 1.25rem;
 }
 
 #columns {
 	grid-row: 1 / 2;
 	grid-column: 2 / 3;
-    flex-direction: row;
+	flex-direction: row;
 }
 
 #rows {
 	grid-row: 2 / 3;
 	grid-column: 1 / 2;
-    flex-direction: column;
+	flex-direction: column;
 }
 
 #squares {
-    width: 800px;
-    height: 800px;
+	width: 800px;
+	height: 800px;
 	grid-row: 2 / 3;
 	grid-column: 2 / 3;
 	display: grid;
 	grid-template-columns: repeat(8, 1fr);
 	grid-template-rows: repeat(8, 1fr);
-    border: 1px solid black;
+	border: 1px solid black;
 }
 
 .square {
@@ -77,5 +78,10 @@ button {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-    border: 1px solid black;
+	border: 1px solid black;
+}
+
+.square:hover {
+	cursor: pointer;
+	border: 3px solid blue;
 }

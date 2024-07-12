@@ -21,7 +21,7 @@ function createKnightMoves() {
 	}
 	// checks move is valid
 	function move(oldPosition, newPosition) {
-        /*
+		/*
 		console.log("Current position is:");
 		console.log(oldPosition);
 		console.log("Submitted Move is:");
@@ -29,7 +29,7 @@ function createKnightMoves() {
         */
 		// get all moves from current position
 		const possibleMoves = adjacencyList[oldPosition[0]][oldPosition[1]];
-        /*
+		/*
 		console.log("Possible moves at current position:");
 		console.log(possibleMoves);
         */
@@ -37,7 +37,7 @@ function createKnightMoves() {
 		const validMoves = possibleMoves.filter(
 			(move) => move[0] >= 0 && move[0] <= 7 && move[1] >= 0 && move[1] <= 7
 		);
-        /*
+		/*
 		console.log("valid moves at current position:");
 		console.log(validMoves);
         */
@@ -78,6 +78,15 @@ function createKnightMoves() {
 				const square = document.createElement("div");
 				square.classList.add("square");
 				square.id = i * 8 + j;
+				// show valid move on hover
+				square.addEventListener("hover", () => {
+					const validMove = move(oldPosition, [i, j - 1]);
+					if (validMove) {
+						square.style.backgroundColor = "green";
+					} else {
+						square.style.backgroundColor = "red";
+					}
+				});
 				// allow click to move
 				square.addEventListener("click", () => {
 					const position = move(oldPosition, [i, j - 1]);
