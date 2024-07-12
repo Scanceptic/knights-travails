@@ -22,7 +22,7 @@ function createKnightMoves() {
 		adjacencyList.push(adjacencyRow);
 	}
 	// checks move is valid
-	function move(oldPosition, newPosition) {
+	function move(oldPosition, newPosition, journey = false) {
 		// get all moves from current position
 		const possibleMoves = adjacencyList[oldPosition[0]][oldPosition[1]];
 		// filter for moves within the board
@@ -42,9 +42,13 @@ function createKnightMoves() {
 				return [oldPosition, newPosition];
 			}
 		}
-		// else return false - invalid move
-		console.log("Invalid move");
-		return false;
+		// if he's on a journey return validMoves
+		if (journey === true) {
+			return validMoves;
+		} else {
+			// else return false
+			return false;
+		}
 	}
 	// renders board on DOM
 	// board is re-rendered after every move so no need to delete old content
@@ -77,6 +81,7 @@ function createKnightMoves() {
 					if (position) {
 						// update old position
 						oldPosition = position[0];
+						console.log(oldPosition);
 						// render new position
 						renderBoard(position[1]);
 					} else {
@@ -101,7 +106,20 @@ function createKnightMoves() {
 	}
 
 	// move if invalid to take the most optimal route with pauses inbetween to show on screen
-	function journey(oldPosition) {}
+	function journey(position = oldPosition, destination) {
+		try {
+			console.log("Going on a journey...");
+			// get all the valid moves from here
+			const validMoves = move(oldPosition, destination, true);
+			console.log("valid moves are:");
+			console.log(validMoves);
+			// attempt to journey all the moves again
+			journey(validMoves, destination);
+		} catch (error) {
+			// watch out for recursion wooo
+			console.log(error);
+		}
+	}
 
 	return { move, renderBoard, journey };
 }
