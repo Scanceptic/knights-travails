@@ -114,17 +114,62 @@ function createKnightMoves() {
 	}
 
 	// move if invalid to take the most optimal route with pauses inbetween to show on screen
-	function journey(position = oldPosition, destination) {
+	function journey(start, destination) {
 		try {
-			console.log("Going on a journey...");
-			// get all the valid moves from here
-			const validMoves = move(position, destination, true);
-			console.log("valid moves are:");
-			console.log(validMoves);
-			// attempt to journey all the moves again
-			journey(validMoves, destination);
+			console.log("On a journey...");
+			const directions = [
+				[2, 1],
+				[2, -1],
+				[-2, 1],
+				[-2, -1],
+				[1, 2],
+				[1, -2],
+				[-1, 2],
+				[-1, -2],
+			];
+
+			// Helper function to determine if a position is valid on the chessboard
+			function isValid(x, y) {
+				return x >= 0 && x < 8 && y >= 0 && y < 8;
+			}
+
+			// Initialize the queue for BFS
+			let queue = [{ position: start, path: [start] }];
+			let visited = new Set();
+			visited.add(start.toString());
+
+			while (queue.length > 0) {
+				let { position, path } = queue.shift();
+				let [x, y] = position;
+
+				// If we reached the destination, log the path and return
+				if (x === destination[0] && y === destination[1]) {
+					console.log("Journey is over");
+					console.log("Path taken:");
+					console.log(path);
+					return true;
+				}
+
+				// Explore all valid knight moves
+				for (let [dx, dy] of directions) {
+					let nextPosition = [x + dx, y + dy];
+					let nextPositionStr = nextPosition.toString();
+					if (
+						isValid(nextPosition[0], nextPosition[1]) &&
+						!visited.has(nextPositionStr)
+					) {
+						visited.add(nextPositionStr);
+						queue.push({
+							position: nextPosition,
+							path: [...path, nextPosition],
+						});
+					}
+				}
+			}
+
+			console.log("No path found");
+			return false;
 		} catch (error) {
-			// watch out for recursion wooo
 			console.log(error);
 		}
 	}
