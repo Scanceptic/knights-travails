@@ -20,7 +20,7 @@ function createKnightMoves() {
 		adjacencyList.push(adjacencyRow);
 	}
 	// checks move is valid
-	function move(oldPosition = [0, 1], newPosition) {
+	function move(oldPosition, newPosition) {
 		console.log("Current position is:");
 		console.log(oldPosition);
 		console.log("Submitted Move is:");
@@ -38,8 +38,8 @@ function createKnightMoves() {
 		// if move array position startX and startY includes an element with [endX, endY]
 		// && if neither start or end position are above 7 or below 0 (out of board)
 		for (let i = 0; i < validMoves.length; i++) {
-			console.log(`Move Attempt ${i}:`);
-			console.log(newPosition);
+			//console.log(`Move Attempt ${i}:`);
+			//console.log(newPosition);
 			console.log("Valid Move to check:");
 			console.log(validMoves[i]);
 			if (
@@ -90,13 +90,16 @@ knightMoves.renderBoard();
 const submitButton = document.getElementById("submit-move");
 const xInput = document.getElementById("x");
 const yInput = document.getElementById("y");
+let oldPosition = [0, 1];
 submitButton.addEventListener("click", () => {
 	const endX = parseInt(xInput.value);
 	const endY = parseInt(yInput.value);
-	const position = knightMoves.move(undefined, [endX, endY]);
+	const position = knightMoves.move(oldPosition, [endX, endY]);
 	if (position) {
 		// update old position
 		oldPosition = position[0];
+		console.log("Old Position:");
+		console.log(oldPosition);
 		// render new position
 		knightMoves.renderBoard(position[1]);
 	} else {
