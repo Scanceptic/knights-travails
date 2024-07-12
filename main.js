@@ -2,6 +2,8 @@
 function createKnightMoves() {
 	// build adjacency list for each of the 64 possible start positions
 	const adjacencyList = [];
+	// start position
+	let oldPosition = [0, 1];
 	for (let i = 0; i < 8; i++) {
 		const adjacencyRow = [];
 		for (let j = 0; j < 8; j++) {
@@ -124,25 +126,3 @@ function createKnightMoves() {
 
 const knightMoves = createKnightMoves();
 knightMoves.renderBoard();
-
-const submitButton = document.getElementById("submit-move");
-const xInput = document.getElementById("x");
-const yInput = document.getElementById("y");
-let oldPosition = [0, 1];
-submitButton.addEventListener("click", () => {
-	// Take in from one input box: E5, A1, etc.
-	// split input into two characters - input.value.length !== 2 = invalid
-	const endX = parseInt(xInput.value);
-	const endY = parseInt(yInput.value);
-	const position = knightMoves.move(oldPosition, [endX, endY]);
-	if (position) {
-		// update old position
-		oldPosition = position[0];
-		//console.log("Old Position:");
-		//console.log(oldPosition);
-		// render new position
-		knightMoves.renderBoard(position[1]);
-	} else {
-		//console.log("Move was Invalid, try again");
-	}
-});
