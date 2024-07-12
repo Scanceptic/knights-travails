@@ -130,6 +130,8 @@ const xInput = document.getElementById("x");
 const yInput = document.getElementById("y");
 let oldPosition = [0, 1];
 submitButton.addEventListener("click", () => {
+	// Take in from one input box: E5, A1, etc.
+	// split input into two characters - input.value.length !== 2 = invalid
 	const endX = parseInt(xInput.value);
 	const endY = parseInt(yInput.value);
 	const position = knightMoves.move(oldPosition, [endX, endY]);
