@@ -27,8 +27,8 @@ function createKnightMoves() {
 			// get all moves from current position
 			const possibleMoves = adjacencyList[oldPosition[0]][oldPosition[1]];
 			// filter for moves within the board
-			const validMoves = possibleMoves.filter(
-				(move) => move[0] >= 0 && move[0] <= 7 && move[1] >= 0 && move[1] <= 7
+			const validMoves = possibleMoves.filter((move) =>
+				isValid(move[0], move[1])
 			);
 			// if move array position startX and startY includes an element with [endX, endY]
 			// && if neither start or end position are above 7 or below 0 (out of board)
@@ -117,6 +117,7 @@ function createKnightMoves() {
 	function journey(start, destination) {
 		try {
 			console.log("On a journey...");
+			// valid directions for knight to move
 			const directions = [
 				[2, 1],
 				[2, -1],
@@ -127,22 +128,17 @@ function createKnightMoves() {
 				[-1, 2],
 				[-1, -2],
 			];
-
-			// Helper function to determine if a position is valid on the chessboard
-			function isValid(x, y) {
-				return x >= 0 && x < 8 && y >= 0 && y < 8;
-			}
-
-			// Initialize the queue for BFS
+			// breadth-first search
 			let queue = [{ position: start, path: [start] }];
 			let visited = new Set();
 			visited.add(start.toString());
-
+			// while queue exists
 			while (queue.length > 0) {
+				// remove item from front of queue
 				let { position, path } = queue.shift();
 				let [x, y] = position;
 
-				// If we reached the destination, log the path and return
+				// if destination reached
 				if (x === destination[0] && y === destination[1]) {
 					console.log("Journey is over");
 					console.log("Path taken:");
@@ -150,14 +146,16 @@ function createKnightMoves() {
 					return true;
 				}
 
-				// Explore all valid knight moves
+				// queue all valid moves
 				for (let [dx, dy] of directions) {
 					let nextPosition = [x + dx, y + dy];
 					let nextPositionStr = nextPosition.toString();
 					if (
+						// next position is a valid move and has not been visited
 						isValid(nextPosition[0], nextPosition[1]) &&
 						!visited.has(nextPositionStr)
 					) {
+						// add to queue
 						visited.add(nextPositionStr);
 						queue.push({
 							position: nextPosition,
@@ -173,8 +171,10 @@ function createKnightMoves() {
 			console.log(error);
 		}
 	}
-
-	return { move, renderBoard, journey };
+	function isValid(x, y) {
+		return x >= 0 && x < 8 && y >= 0 && y < 8;
+	}
+	return { move, renderBoard, journey, isValid };
 }
 
 const knightMoves = createKnightMoves();
