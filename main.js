@@ -45,8 +45,9 @@ function createKnightMoves() {
 			return false;
 		}
 	}
-	// creates board on DOM
-	function createBoard() {
+	// renders board on DOM
+	// board is re-rendered after every move so no need to delete old content
+	function renderBoard(position) {
 		const board = document.getElementById("board");
 		for (let i = 0; i < 8; i++) {
 			for (let j = 1; j < 9; j++) {
@@ -54,20 +55,14 @@ function createKnightMoves() {
 				square.classList.add("square");
 				square.id = i * 8 + j;
 				board.appendChild(square);
+				if (position[0] * 8 + position[1] === parseInt(square.id)) {
+					square.textContent = "Knight";
+					square.classList.add("knight");
+				}
 			}
 		}
 	}
-	// takes valid move from move func and renders on DOM
-	function renderMove(moveX, moveY) {
-		const board = document.getElementById("board");
-		const squares = document.querySelectorAll("square");
-		const moveSquare = moveX * 8 + moveY + 1;
-		const moveSquareDOM = document.getElementById(`${moveSquare}`);
-		moveSquareDOM.textContent = "Knight";
-		let oldPosition = [moveX, moveY];
-		return oldPosition;
-	}
-	return { adjacencyList, move, createBoard, renderMove };
+	return { adjacencyList, move, renderBoard };
 }
 
 const submitButton = document.getElementById("submit-move");
