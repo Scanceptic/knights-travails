@@ -1,3 +1,10 @@
+:root {
+	--primary-bg-color: #3b3b3b;
+	--secondary-bg-color: #ffffff;
+	--primary-text-color: #ffffff;
+	--secondary-text-color: #000000;
+}
+
 * {
 	box-sizing: border-box;
 	margin: 0;
@@ -11,6 +18,8 @@ body {
 	justify-content: center;
 	align-items: center;
 	min-height: 100vh;
+	background-color: var(--primary-bg-color);
+	color: var(--primary-text-color);
 }
 
 #board {
