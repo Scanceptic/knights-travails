@@ -91,7 +91,8 @@ function createKnightMoves() {
 							renderBoard(position[1]);
 						} else {
 							// go on a journey
-							journey(oldPosition, [i, j - 1]);
+							const journeyPath = getJourney(oldPosition, [i, j - 1]);
+							doJourney(journeyPath);
 						}
 					});
 					squares.appendChild(square);
@@ -114,7 +115,7 @@ function createKnightMoves() {
 	}
 
 	// move if invalid to take the most optimal route with pauses inbetween to show on screen
-	function journey(start, destination) {
+	function getJourney(start, destination) {
 		try {
 			console.log("On a journey...");
 			// valid directions for knight to move
@@ -143,7 +144,7 @@ function createKnightMoves() {
 					console.log("Journey is over");
 					console.log("Path taken:");
 					console.log(path);
-					return true;
+					return path;
 				}
 
 				// queue all valid moves
@@ -171,10 +172,30 @@ function createKnightMoves() {
 			console.log(error);
 		}
 	}
+	// check valid board move
 	function isValid(x, y) {
-		return x >= 0 && x < 8 && y >= 0 && y < 8;
+		try {
+			return x >= 0 && x < 8 && y >= 0 && y < 8;
+		} catch (error) {
+			console.log(error);
+		}
 	}
-	return { move, renderBoard, journey, isValid };
+	// do journey once given optimal route
+	async function doJourney(path) {
+		try {
+			for (let i = 0; i < path.length; i++) {
+				await new Promise((resolve) => {
+					setTimeout(() => {
+						renderBoard(path[i]);
+						resolve();
+					}, 250);
+				});
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	}
+	return { move, renderBoard, getJourney, isValid };
 }
 
 const knightMoves = createKnightMoves();
