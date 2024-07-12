@@ -88,7 +88,7 @@ function createKnightMoves() {
 					}
 				});
 				square.addEventListener("mouseleave", () => {
-					square.style.backgroundColor = "#FFFFFF";
+					square.style.backgroundColor = null;
 				});
 				// allow click to move
 				square.addEventListener("click", () => {
@@ -109,7 +109,11 @@ function createKnightMoves() {
 					position &&
 					position[0] * 8 + position[1] + 1 === parseInt(square.id)
 				) {
-					square.textContent = "Knight";
+					const knightImage = document.createElement("img");
+					knightImage.src = "images/knight.jpg";
+					knightImage.alt = "Knight";
+					knightImage.id = "knightImage";
+					square.appendChild(knightImage);
 					square.classList.add("knight");
 				}
 			}

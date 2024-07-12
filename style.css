@@ -86,3 +86,10 @@ button {
 	cursor: pointer;
 	border: 3px solid blue;
 }
+
+#knightImage {
+	padding: 5px;
+	margin: 0;
+	height: 100%;
+	width: 100%;
+}
