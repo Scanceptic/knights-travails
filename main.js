@@ -191,6 +191,9 @@ function createKnightMoves() {
 					}, 250);
 				});
 			}
+			// return final position
+			oldPosition = path[path.length - 1];
+			return path[path.length - 1];
 		} catch (error) {
 			console.log(error);
 		}
