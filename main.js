@@ -23,85 +23,93 @@ function createKnightMoves() {
 	}
 	// checks move is valid
 	function move(oldPosition, newPosition, journey = false) {
-		// get all moves from current position
-		const possibleMoves = adjacencyList[oldPosition[0]][oldPosition[1]];
-		// filter for moves within the board
-		const validMoves = possibleMoves.filter(
-			(move) => move[0] >= 0 && move[0] <= 7 && move[1] >= 0 && move[1] <= 7
-		);
-		// if move array position startX and startY includes an element with [endX, endY]
-		// && if neither start or end position are above 7 or below 0 (out of board)
-		for (let i = 0; i < validMoves.length; i++) {
-			if (
-				validMoves[i][0] === newPosition[0] &&
-				validMoves[i][1] === newPosition[1]
-			) {
-				// update old Position
-				oldPosition = newPosition;
-				// move is legal, return move coords
-				return [oldPosition, newPosition];
+		try {
+			// get all moves from current position
+			const possibleMoves = adjacencyList[oldPosition[0]][oldPosition[1]];
+			// filter for moves within the board
+			const validMoves = possibleMoves.filter(
+				(move) => move[0] >= 0 && move[0] <= 7 && move[1] >= 0 && move[1] <= 7
+			);
+			// if move array position startX and startY includes an element with [endX, endY]
+			// && if neither start or end position are above 7 or below 0 (out of board)
+			for (let i = 0; i < validMoves.length; i++) {
+				if (
+					validMoves[i][0] === newPosition[0] &&
+					validMoves[i][1] === newPosition[1]
+				) {
+					// update old Position
+					oldPosition = newPosition;
+					// move is legal, return move coords
+					return [oldPosition, newPosition];
+				}
 			}
-		}
-		// if he's on a journey return validMoves
-		if (journey === true) {
-			return validMoves;
-		} else {
-			// else return false
-			return false;
+			// if he's on a journey return validMoves
+			if (journey === true) {
+				return validMoves;
+			} else {
+				// else return false
+				return false;
+			}
+		} catch (error) {
+			console.log(error);
 		}
 	}
 	// renders board on DOM
 	// board is re-rendered after every move so no need to delete old content
 	function renderBoard(position = [0, 1]) {
-		const squares = document.getElementById("squares");
-		// clear old board
-		while (squares.lastChild) {
-			squares.removeChild(squares.lastChild);
-		}
-		for (let i = 0; i < 8; i++) {
-			for (let j = 1; j < 9; j++) {
-				const square = document.createElement("div");
-				square.classList.add("square");
-				square.id = i * 8 + j;
-				// show valid move on hover
-				square.addEventListener("mouseover", () => {
-					const validMove = move(oldPosition, [i, j - 1]);
-					if (validMove) {
-						square.style.backgroundColor = "#55FF55";
-					} else {
-						square.style.backgroundColor = "#FF5555";
+		try {
+			const squares = document.getElementById("squares");
+			// clear old board
+			while (squares.lastChild) {
+				squares.removeChild(squares.lastChild);
+			}
+			for (let i = 0; i < 8; i++) {
+				for (let j = 1; j < 9; j++) {
+					const square = document.createElement("div");
+					square.classList.add("square");
+					square.id = i * 8 + j;
+					// show valid move on hover
+					square.addEventListener("mouseover", () => {
+						const validMove = move(oldPosition, [i, j - 1]);
+						if (validMove) {
+							square.style.backgroundColor = "#55FF55";
+						} else {
+							square.style.backgroundColor = "#FF5555";
+						}
+					});
+					square.addEventListener("mouseleave", () => {
+						square.style.backgroundColor = null;
+					});
+					// allow click to move
+					square.addEventListener("click", () => {
+						const position = move(oldPosition, [i, j - 1]);
+						if (position) {
+							// update old position
+							oldPosition = position[0];
+							console.log(oldPosition);
+							// render new position
+							renderBoard(position[1]);
+						} else {
+							// go on a journey
+							journey(oldPosition, [i, j - 1]);
+						}
+					});
+					squares.appendChild(square);
+					if (
+						position &&
+						position[0] * 8 + position[1] + 1 === parseInt(square.id)
+					) {
+						const knightImage = document.createElement("img");
+						knightImage.src = "images/knight.jpg";
+						knightImage.alt = "Knight";
+						knightImage.id = "knightImage";
+						square.appendChild(knightImage);
+						square.classList.add("knight");
 					}
-				});
-				square.addEventListener("mouseleave", () => {
-					square.style.backgroundColor = null;
-				});
-				// allow click to move
-				square.addEventListener("click", () => {
-					const position = move(oldPosition, [i, j - 1]);
-					if (position) {
-						// update old position
-						oldPosition = position[0];
-						console.log(oldPosition);
-						// render new position
-						renderBoard(position[1]);
-					} else {
-						// go on a journey
-						journey(oldPosition, [i, j - 1]);
-					}
-				});
-				squares.appendChild(square);
-				if (
-					position &&
-					position[0] * 8 + position[1] + 1 === parseInt(square.id)
-				) {
-					const knightImage = document.createElement("img");
-					knightImage.src = "images/knight.jpg";
-					knightImage.alt = "Knight";
-					knightImage.id = "knightImage";
-					square.appendChild(knightImage);
-					square.classList.add("knight");
 				}
 			}
+		} catch (error) {
+			console.log(error);
 		}
 	}
 
@@ -110,7 +118,7 @@ function createKnightMoves() {
 		try {
 			console.log("Going on a journey...");
 			// get all the valid moves from here
-			const validMoves = move(oldPosition, destination, true);
+			const validMoves = move(position, destination, true);
 			console.log("valid moves are:");
 			console.log(validMoves);
 			// attempt to journey all the moves again
